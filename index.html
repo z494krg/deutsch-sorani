@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Transkription von Deutsch ins Zentralkurdische</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+        }
+        h1 {
+          background-color: #00558b;
+          color: #fff;
+          padding: 10px;
+          margin: 0;
+        }
+        form {
+          padding: 10px;
+          border: 2px solid #00558b;
+          border-radius: 10px;
+          margin: 20px;
+        }
+        label {
+          display: block;
+          margin-bottom: 5px;
+          font-size: 1.2em;
+        }
+        textarea {
+          padding: 5px;
+          font-size: 1.2em;
+          border-radius: 5px;
+          border: none;
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+          width: 100%;
+          max-width: 500px;
+          height: 100px;
+        }
+        input[type="text"] {
+          padding: 5px;
+          font-size: 1.2em;
+          border-radius: 5px;
+          border: none;
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+          width: 100%;
+          max-width: 500px;
+        }
+        button[type="button"] {
+          background-color: #00558b;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          padding: 10px;
+          font-size: 1.2em;
+          cursor: pointer;
+        }
+        button[type="button"]:hover {
+          background-color: #00395e;
+        }
+        p {
+          font-size: 1.2em;
+          margin: 20px;
+        }
+        #ergebnis {
+          font-weight: bold;
+        }
+      </style>
+    
+    <script>
+function transkribiere(text) {
+const buchstaben = {
+'a': 'ا',
+'b': 'ب',
+'c': 'ج',
+'d': 'د',
+'e': 'ە',
+'f': 'ف',
+'g': 'گ',
+'h': 'ه',
+'i': 'ی',
+'j': 'ج',
+'k': 'ک',
+'l': 'ل',
+'m': 'م',
+'n': 'ن',
+'o': 'ۆ',
+'p': 'پ',
+'q': 'ق',
+'r': 'ر',
+'s': 'س',
+'t': 'ت',
+'u': 'و',
+'v': 'ڤ',
+'w': 'و',
+'x': 'کس',
+'y': 'ی',
+'z': 'ز',
+'ä': 'ە',
+'ö': 'ۆ',
+'ü': 'وو',
+'ß': 'س',
+'.': '.',
+',': '،',
+':': ':',
+';': '؛',
+'!': '!',
+'?': '؟'
+};
+
+let result = '';
+let start = true;
+for (let i = 0; i < text.length; i++) {
+    const char = text[i].toLowerCase();
+    if (start && (char == 'a' || char == 'e' || char == 'i' || char == 'o' || char == 'u' || char == 'ä' || char == 'ö' || char == 'ü' || char == 'y')) {
+        result += 'ئ';
+    }
+    start = (char == ' ' || char == '\n' || char == '\t' || char == ',' || char == '.' || char == '?' || char == '!' || char == ';' || char == ':');
+    if (char == 'l' && text[i + 1] == 'l') {
+        result += 'ڵ';
+        i++;
+    } else if (char == 'p' && text[i + 1] == 'h') {
+        result += 'ف';
+        i++;
+    } else if (char == 'c' && text[i + 1] == 'h') {
+        result += 'خ';
+        i++;
+    } else if (char == 'c' && text[i + 1] == 'h' && text[i + 2] == 't') {
+        result += 'چ';
+        i += 2;
+    } else if (text.slice(i, i + 2) == 'ie') {
+        result += "ی";
+        i++;
+    } else if (char == 's' && text[i + 1] == 'c' && text[i + 2] == 'h') {
+        result += 'ش';
+        i += 2;
+    } else if (char == 'l' && text[i + 1] == 'l') {
+        result += 'ڵ';
+        i++;
+    } else if (buchstaben[char]) {
+        result += buchstaben[char];
+
+    } else if (buchstaben[char]) {
+        result += buchstaben[char];
+    } else {
+        result += char;
+    }
+}
+return result;
+}
+    </script>
+</head>
+<body>
+    <h1>Transkription von Deutsch ins Zentralkurdische</h1>
+    <p style="font-size: 1.2em; margin-top: 10px;">
+        Dieses Projekt ist eine Webseite, die es Benutzern ermöglicht, deutsche Texte in das Zentralkurdische Alphabet zu transkribieren. Dazu gibt es ein Eingabefeld, in das der Benutzer den deutschen Text eingibt, und einen "Transkribieren"-Button, der den Text in das Zentralkurdische transkribiert.
+    </p>
+    <form>
+    <label for="text-input">Geben Sie den deutschen Text ein:</label><br>
+    <textarea id="text-input" name="text-input"></textarea><br>
+    <button type="button" onclick="transkriptionAusfuehren()">Transkribieren</button>
+    </form>
+<form>
+<div id="ausgabe">
+    <label for="ergebnis">Das Ergebnis lautet:</label><br>
+    <textarea id="ergebnis" rows="8" cols="80" readonly></textarea><br>
+    <button type="button" onclick="kopieren()">Kopieren</button>
+    <button type="button" onclick="Leeren()">Leeren</button>
+</div>
+</form>
+    <script>
+    function transkriptionAusfuehren() {
+        const textInput = document.getElementById("text-input").value;
+        const ergebnis = document.getElementById("ergebnis");
+        ergebnis.textContent = transkribiere(textInput);
+    }
+    function Leeren() {
+    document.getElementById("text-input").value = "";
+    document.getElementById("ergebnis").value = "";
+    }
+    function kopieren() {
+    const ergebnis = document.getElementById("ergebnis");
+    ergebnis.select();
+    document.execCommand("copy");
+    }
+    </script>
+</body>
+</html>
